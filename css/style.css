@@ -1,0 +1,743 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+    --bg: #0d0d0d;
+    --fg: #c8c8c8;
+    --dim: #4a4a4a;
+    --accent: #26a269;
+    /* muted green */
+    --warn: #cd9309;
+    /* muted yellow */
+    --err: #c01c28;
+    /* muted red */
+    --blue: #3584e4;
+    /* muted blue */
+    --sel-bg: #c8c8c8;
+    --sel-fg: #0d0d0d;
+    --bar-bg: #1e1e1e;
+    --bar-fg: #c8c8c8;
+    --bar-active-bg: #3584e4;
+    --bar-active-fg: #0d0d0d;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+    /* full-screen terminal feel */
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: 'IBM Plex Mono', 'Cascadia Code', 'Fira Code', monospace;
+    font-size: clamp(11px, 1.8vw, 14px);
+    /* fluid font size */
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Text selection = inverse video */
+::selection {
+    background: var(--sel-bg);
+    color: var(--sel-fg);
+}
+
+/* Thin scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--dim);
+    border-radius: 0;
+}
+
+/* ============================================================
+   TMUX STATUS BAR (top)
+   ============================================================ */
+#tmux-bar {
+    background: var(--bar-bg);
+    color: var(--bar-fg);
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--dim);
+    user-select: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.tmux-left,
+.tmux-right {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+}
+
+.tmux-session {
+    padding: 4px 12px;
+    background: var(--accent);
+    color: #000;
+    font-weight: 600;
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.tmux-tab {
+    background: var(--bar-bg);
+    color: var(--dim);
+    border: none;
+    border-right: 1px solid var(--dim);
+    padding: 4px 14px;
+    font-family: inherit;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
+    white-space: nowrap;
+}
+
+.tmux-tab:hover {
+    background: #2a2a2a;
+    color: var(--fg);
+}
+
+.tmux-tab.active {
+    background: var(--bg);
+    color: var(--fg);
+    border-bottom: 1px solid var(--bg);
+    /* "lifted" tab effect */
+    font-weight: 600;
+}
+
+.tmux-right {
+    gap: 16px;
+    padding: 4px 12px;
+    font-size: 0.8em;
+    color: var(--dim);
+    align-items: center;
+}
+
+#tmux-clock {
+    color: var(--warn);
+    font-weight: 500;
+}
+
+/* Hide host label on small screens */
+@media (max-width: 480px) {
+    .tmux-host {
+        display: none;
+    }
+
+    .tmux-session {
+        font-size: 0.75em;
+        padding: 4px 8px;
+    }
+
+    .tmux-tab {
+        padding: 4px 10px;
+    }
+}
+
+/* ============================================================
+   MAIN PANE
+   ============================================================ */
+#terminal-pane {
+    flex: 1 1 0;
+    overflow-y: auto;
+    padding: clamp(10px, 3vw, 24px);
+}
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+/* ============================================================
+   PROMPT LINE
+   ============================================================ */
+.prompt-line {
+    margin-bottom: 8px;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.ps1-user {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.ps1-at {
+    color: var(--dim);
+}
+
+.ps1-host {
+    color: var(--warn);
+    font-weight: 600;
+}
+
+.ps1-sep {
+    color: var(--dim);
+}
+
+.ps1-path {
+    color: var(--blue);
+}
+
+.ps1-dollar {
+    color: var(--fg);
+}
+
+.cmd-text {
+    color: var(--fg);
+    font-style: italic;
+}
+
+.cmd-text.nowrap {
+    white-space: nowrap;
+    font-style: italic;
+}
+
+.cmd-output-header {
+    color: var(--dim);
+    font-size: 0.9em;
+    margin-bottom: 4px;
+}
+
+/* ============================================================
+   ABOUT SECTION
+   ============================================================ */
+
+/* Two-column layout: left = cat output, right = neofetch */
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(20px, 4vw, 60px);
+    align-items: start;
+}
+
+@media (max-width: 800px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.about-text {
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 0.92em;
+    line-height: 1.7;
+}
+
+/* NEOFETCH PANEL */
+.neofetch {
+    margin-top: 8px;
+    font-size: 0.92em;
+    line-height: 1.8;
+}
+
+.nf-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.nf-sep {
+    color: var(--dim);
+}
+
+.nf-divider {
+    color: var(--dim);
+    margin-bottom: 4px;
+}
+
+.nf-row {
+    display: grid;
+    grid-template-columns: 8ch 1fr;
+    gap: 4px;
+}
+
+.nf-key {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.nf-val {
+    color: var(--fg);
+}
+
+/* Terminal color swatches */
+.nf-colors {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.nfc {
+    display: inline-block;
+    width: 22px;
+    height: 14px;
+    border: 1px solid var(--dim);
+}
+
+.skill-java {
+    color: #e76f00;
+    /* Java orange */
+}
+
+.skill-c {
+    color: var(--blue);
+}
+
+.skill-py {
+    color: var(--warn);
+}
+
+.skill-asm {
+    color: var(--err);
+}
+
+.skill-re {
+    color: var(--fg);
+}
+
+.skill-nw {
+    color: var(--dim);
+}
+
+.term-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.term-link:hover {
+    background: var(--accent);
+    color: var(--bg);
+}
+
+.term-link-static {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* ============================================================
+   FILE LIST (ls -la style)
+   ============================================================ */
+.file-list {
+    list-style: none;
+    margin-top: 4px;
+}
+
+.file-row {
+    display: grid;
+    grid-template-columns: 10ch 9ch 7ch 1fr;
+    /* perms | user | size | name */
+    gap: 0 clamp(8px, 2vw, 20px);
+    padding: 1px 4px;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: background 0.08s, color 0.08s;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* On narrow screens: switch to a 2-column compact grid */
+@media (max-width: 600px) {
+    .file-row {
+        grid-template-columns: 9ch 1fr;
+        grid-template-rows: auto auto;
+    }
+
+    .file-user {
+        display: none;
+    }
+
+    .file-size {
+        display: none;
+    }
+
+    .file-perms {
+        grid-row: 1;
+        grid-column: 1;
+        font-size: 0.8em;
+    }
+
+    .file-name {
+        grid-row: 1;
+        grid-column: 2;
+    }
+
+    .file-desc {
+        grid-row: 2;
+        grid-column: 1 / -1;
+        padding-left: 0;
+    }
+}
+
+.file-row:hover,
+.file-row:focus {
+    background: var(--sel-bg);
+    color: var(--sel-fg);
+    border-left-color: var(--accent);
+    outline: none;
+}
+
+.file-row:hover .file-perms,
+.file-row:hover .file-user,
+.file-row:hover .file-name,
+.file-row:hover .file-size,
+.file-row:focus .file-perms,
+.file-row:focus .file-user,
+.file-row:focus .file-name,
+.file-row:focus .file-size {
+    color: var(--sel-fg);
+}
+
+.loading-row {
+    cursor: default;
+}
+
+.loading-row:hover {
+    background: transparent;
+    border-left-color: transparent;
+}
+
+.file-perms {
+    color: var(--dim);
+    font-size: 0.9em;
+}
+
+.file-user {
+    color: var(--accent);
+}
+
+.file-size {
+    color: var(--warn);
+    text-align: right;
+}
+
+.file-name {
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-name.dir {
+    color: var(--blue);
+}
+
+.file-name.exe {
+    color: var(--accent);
+}
+
+.file-name.dim {
+    color: var(--dim);
+    font-style: italic;
+}
+
+/* Expandable repo detail row */
+.file-detail {
+    grid-column: 1 / -1;
+    display: none;
+    padding: 6px 0 6px 12px;
+    border-left: 2px solid var(--accent);
+    margin: 2px 0 4px 4px;
+    color: var(--fg);
+    font-size: 0.88em;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.file-detail.open {
+    display: block;
+}
+
+.file-detail a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.file-detail a:hover {
+    background: var(--accent);
+    color: var(--bg);
+}
+
+/* Blog tag badge */
+.tag-badge {
+    display: inline-block;
+    background: var(--err);
+    color: #fff;
+    font-size: 0.75em;
+    padding: 0 5px;
+    margin-right: 6px;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+/* ============================================================
+   BOTTOM STATUS BAR (vim-style)
+   ============================================================ */
+#status-bar {
+    background: var(--bar-bg);
+    color: var(--dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 10px;
+    font-size: 0.8em;
+    border-top: 1px solid var(--dim);
+    flex-shrink: 0;
+    user-select: none;
+}
+
+#status-mode {
+    background: var(--accent);
+    color: #000;
+    font-weight: 700;
+    padding: 0 8px;
+    margin-right: 8px;
+}
+
+/* ============================================================
+   VIM-STYLE MODAL (full-screen article reader)
+   ============================================================ */
+.vim-modal {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 500;
+    display: none;
+    flex-direction: column;
+}
+
+.vim-modal.active {
+    display: flex;
+}
+
+.vim-topbar {
+    background: var(--bar-bg);
+    color: var(--accent);
+    padding: 3px 12px;
+    font-size: 0.85em;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--dim);
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.vim-content {
+    flex: 1 1 0;
+    overflow-y: auto;
+    padding: clamp(12px, 4vw, 32px) clamp(16px, 6vw, 60px);
+    max-width: 90ch;
+    width: 100%;
+    margin: 0 auto;
+    /* centrato nel modal */
+    border-left: 1px solid var(--dim);
+    /* gutter in stile editor */
+}
+
+/* Markdown styles inside vim content */
+.vim-content h1 {
+    color: var(--accent);
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--dim);
+    padding-bottom: 6px;
+}
+
+.vim-content h2 {
+    color: var(--warn);
+    margin: 20px 0 8px;
+}
+
+.vim-content h3 {
+    color: var(--fg);
+    margin: 16px 0 6px;
+}
+
+.vim-content p {
+    margin-bottom: 12px;
+    color: var(--fg);
+}
+
+.vim-content ul,
+.vim-content ol {
+    margin: 8px 0 12px 20px;
+}
+
+.vim-content li {
+    margin-bottom: 4px;
+}
+
+.vim-content code {
+    background: #1a1a1a;
+    border: 1px solid var(--dim);
+    padding: 1px 5px;
+    font-family: inherit;
+    font-size: 0.9em;
+    color: var(--warn);
+}
+
+.vim-content pre {
+    background: #111;
+    border: 1px solid var(--dim);
+    border-left: 3px solid var(--accent);
+    padding: 12px;
+    overflow-x: auto;
+    margin-bottom: 14px;
+}
+
+.vim-content pre code {
+    background: transparent;
+    border: none;
+    color: var(--fg);
+    padding: 0;
+}
+
+.vim-content blockquote {
+    border-left: 3px solid var(--err);
+    padding-left: 12px;
+    color: var(--dim);
+    margin: 12px 0;
+}
+
+.vim-content a {
+    color: var(--blue);
+    text-decoration: underline;
+}
+
+.vim-statusbar {
+    background: var(--bar-bg);
+    color: var(--bar-fg);
+    padding: 3px 12px;
+    font-size: 0.82em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--dim);
+    flex-shrink: 0;
+}
+
+#vim-close {
+    background: none;
+    border: 1px solid var(--err);
+    color: var(--err);
+    font-family: inherit;
+    font-size: 0.85em;
+    padding: 1px 8px;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+#vim-close:hover {
+    background: var(--err);
+    color: var(--bg);
+}
+
+/* ============================================================
+   BLINKING CURSOR UTILITY
+   ============================================================ */
+.blink {
+    display: inline-block;
+    width: 8px;
+    height: 1.1em;
+    background: var(--fg);
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+/* ============================================================
+   RESPONSIVE – TABLET/MOBILE tweaks
+   ============================================================ */
+
+/* Tablet (481px – 900px): slightly larger tap targets */
+@media (max-width: 900px) {
+    .file-row {
+        gap: 0 12px;
+        padding: 3px 4px;
+    }
+
+    .vim-content {
+        max-width: 100%;
+    }
+}
+
+/* Mobile (≤ 480px): switch font size, hide some columns */
+@media (max-width: 480px) {
+    #terminal-pane {
+        padding: 10px 8px;
+    }
+
+    /* On mobile, shrink the about pre to not overflow */
+    .about-text {
+        font-size: 0.78em;
+    }
+
+    /* Make file rows tappable */
+    .file-row {
+        padding: 6px 4px;
+    }
+
+    #status-bar {
+        font-size: 0.72em;
+    }
+}
+
+/* Touch devices: make tabs easier to tap */
+@media (pointer: coarse) {
+    .tmux-tab {
+        padding: 8px 14px;
+    }
+
+    .file-row {
+        padding: 8px 4px;
+    }
+
+    #vim-close {
+        padding: 6px 14px;
+    }
+}
