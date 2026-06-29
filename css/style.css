@@ -220,7 +220,7 @@ body.malevolent-domain #terminal-pane::before {
             rgba(2, 2, 3, 0.42) 72%,
             rgba(2, 2, 3, 0.76) 100%),
         linear-gradient(180deg, rgba(2, 2, 3, 0.04), rgba(2, 2, 3, 0.58)),
-        url('../assets/sukuna-malevolent-domain.png') center 44% / cover no-repeat;
+        url('../assets/sukuna-malevolent-domain.webp') center 44% / cover no-repeat;
     opacity: 0.68;
     filter: saturate(0.88) contrast(1.08);
     transform: scale(1.015);
@@ -322,7 +322,7 @@ body.malevolent-domain #terminal-pane::before {
     body.malevolent-domain #terminal-pane::before {
         background:
             linear-gradient(180deg, rgba(2, 2, 3, 0.5), rgba(2, 2, 3, 0.84)),
-            url('../assets/sukuna-malevolent-domain.png') center 32% / auto 100% no-repeat;
+            url('../assets/sukuna-malevolent-domain.webp') center 32% / auto 100% no-repeat;
         opacity: 0.5;
     }
 }
