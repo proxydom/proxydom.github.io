@@ -1,0 +1,42 @@
+[
+  {
+    "filename": "signed_driver_does_not_mean_trusted_driver.md",
+    "title": "A signed driver does not mean a trusted driver",
+    "date": "2026-05-31",
+    "tag": "WINDOWS",
+    "description": "Why vulnerable drivers turn local admin into a kernel problem, and why the real work starts at the IOCTL surface.",
+    "size": 8304
+  },
+  {
+    "filename": "one_hook_does_not_make_you_invisible.md",
+    "title": "One hook does not make you invisible",
+    "date": "2026-05-08",
+    "tag": "REDTEAM",
+    "description": "A red team perspective on false confidence, layered telemetry, and why one clean bypass changes almost nothing.",
+    "size": 5792
+  },
+  {
+    "filename": "from_revshell_to_c2.md",
+    "title": "From a C# reverse shell to Blackiron",
+    "date": "2026-04-07",
+    "tag": "MALWARE",
+    "description": "My journey from 50 lines of socket code to a Windows agent that stopped treating execution like the finish line.",
+    "size": 6220
+  },
+  {
+    "filename": "sandbox_detection_scoring.md",
+    "title": "How I detect sandboxes without calling a single suspicious API",
+    "date": "2026-04-07",
+    "tag": "MALWARE",
+    "description": "Why I moved from single anti-VM checks to a calibrated score built from several weak environmental signals.",
+    "size": 6315
+  },
+  {
+    "filename": "executing_elf_binary_from_web.md",
+    "title": "ELF execution from RAM",
+    "date": "2026-02-25",
+    "tag": "LINUX",
+    "description": "A small Linux loader experiment using memfd_create() and fexecve(), with a look at what memory-backed execution does and does not hide.",
+    "size": 7055
+  }
+]

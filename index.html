@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="proxydom - low-level security researcher, exploit developer, and tool builder.">
+    <title>proxydom †</title>
+    <link id="site-favicon" rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css?v=malevolent-motion-4">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body class="malevolent-domain">
+
+    <!-- TMUX-STYLE STATUS BAR -->
+    <header id="tmux-bar">
+        <div class="tmux-left">
+            <span class="tmux-session">[0] proxydom@localhost</span>
+            <button class="tmux-tab active" data-tab="home">/home/proxydom</button>
+            <button class="tmux-tab" data-tab="projects">projects/</button>
+            <button class="tmux-tab" data-tab="writeups">writeups/</button>
+        </div>
+        <div class="tmux-right">
+            <span class="tmux-kernel">Linux 7.0.9-arch1-1</span>
+            <span id="tmux-clock"></span>
+        </div>
+    </header>
+
+    <!-- MAIN TERMINAL PANE -->
+    <main id="terminal-pane">
+
+        <!-- === ABOUT === -->
+        <section id="home" class="section active">
+            <div class="about-grid">
+
+                <!-- LEFT: identity + bio -->
+                <div class="about-left">
+                    <p class="prompt-line"><span class="ps1-user">proxydom</span><span class="ps1-at">@</span><span
+                            class="ps1-host">localhost</span><span class="ps1-sep">:</span><span
+                            class="ps1-path">~</span><span class="ps1-dollar"> $</span> <span
+                            class="cmd-text nowrap">cat profile.txt</span></p>
+                    <pre class="about-text">
+-----BEGIN PROXYDOM IDENTITY-----
+
+LOW-LEVEL SECURITY RESEARCH
+AUTHORIZED LABS // PRIVATE NOTES
+
+IDENTITY : proxydom // Italian CS student
+WORK     : low-level security, reversing, red-team tooling
+GROUND   : authorized labs, private research, controlled targets
+
+BACKGROUND :
+  Self-taught in security through CVE research,
+  C tooling, binary reversing, and building my own projects.
+
+CURRENT  :
+  ↳ Kernel internals + EDR telemetry
+  ↳ Agent design and C2 infrastructure
+  ↳ Malware analysis & reverse engineering
+  ↳ Web Penetration Testing
+  ↳ Building Supahunter
+
+-----END PROXYDOM IDENTITY-----
+  <span class="output-cursor"></span>
+
+                    </pre>
+                </div>
+
+                <!-- RIGHT: skills + contacts -->
+                <div class="about-right">
+                    <p class="prompt-line"><span class="ps1-user">proxydom</span><span class="ps1-at">@</span><span
+                            class="ps1-host">localhost</span><span class="ps1-sep">:</span><span
+                            class="ps1-path">~</span><span class="ps1-dollar"> $</span> <span
+                            class="cmd-text nowrap">cat skills.txt</span></p>
+                    <pre class="about-text">
+WORKING SET :
+  <span class="skill-java">[Java]</span>       application development
+  <span class="skill-c">[C / C++]</span>    tools, TUIs, low-level research
+  <span class="skill-rust">[Rust]</span>       agent development / no_std
+  <span class="skill-py">[Python]</span>     automation and tooling
+  <span class="skill-re">[Reversing]</span>  PE / ELF analysis
+  <span class="skill-nw">[Net / AD]</span>   lab infrastructure
+
+CONTACTS :
+  <a href="https://github.com/proxydom" target="_blank" class="term-link">↳ github.com/proxydom</a>
+  <a href="https://x.com/proxy_dom"     target="_blank" class="term-link">↳ x.com/proxy_dom</a>
+  <a href="mailto:proxydom.dev@proton.me" class="term-link">↳ mail: proxydom.dev@proton.me</a>
+  <a href="keys/proxydom.asc" target="_blank" class="term-link" title="3B46 0321 D50A F4B6 C5E6 58DE CCF5 C9A4 CAD4 A98F">↳ pgp: CCF5 C9A4 CAD4 A98F</a>
+                    </pre>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- === PROJECTS === -->
+        <section id="projects" class="section">
+            <p class="prompt-line"><span class="ps1-user">proxydom</span><span class="ps1-at">@</span><span
+                    class="ps1-host">localhost</span><span class="ps1-sep">:</span><span
+                    class="ps1-path">~/projects</span><span class="ps1-dollar"> $</span> <span
+                    class="cmd-text nowrap">ls -la</span></p>
+            <p class="cmd-output-header">total &lt;fetching from api.github.com&gt;</p>
+            <ul id="repo-list" class="file-list">
+                <li class="file-row loading-row">
+                    <span class="file-perms">drwxr-xr-x</span>
+                    <span class="file-user">proxydom</span>
+                    <span class="file-size">-</span>
+                    <span class="file-name dim">fetching repos...</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- === BLOG === -->
+        <section id="writeups" class="section">
+            <p class="prompt-line"><span class="ps1-user">proxydom</span><span class="ps1-at">@</span><span
+                    class="ps1-host">localhost</span><span class="ps1-sep">:</span><span
+                    class="ps1-path">~/writeups</span><span class="ps1-dollar"> $</span> <span
+                    class="cmd-text nowrap">ls -lt *.md</span></p>
+            <ul id="blog-list" class="file-list">
+                <li class="file-row loading-row">
+                    <span class="file-perms">-rw-r--r--</span>
+                    <span class="file-user">proxydom</span>
+                    <span class="file-size">-</span>
+                    <span class="file-name dim">loading intel.json...</span>
+                </li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- BOTTOM STATUS BAR (vim-style) -->
+    <div id="status-bar">
+        <span id="status-mode">NORMAL</span>
+        <span id="status-info">PROXYDOM // terminal online</span>
+        <span id="status-pos">0,0</span>
+    </div>
+
+    <!-- VIM-STYLE MODAL (for reading blog posts) -->
+    <div id="vim-modal" class="vim-modal" role="dialog" aria-modal="true" aria-label="Article Reader">
+        <div class="vim-topbar">
+            <span id="vim-filename">untitled.md</span>
+            <div class="vim-topbar-actions">
+                <button id="vim-copy-link" title="Copy article permalink">:yank url</button>
+                <span>[sealed readonly]</span>
+            </div>
+        </div>
+        <div id="vim-content" class="vim-content markdown-body"></div>
+        <div class="vim-statusbar">
+            <span>-- READ ONLY // WRITEUPS --</span>
+            <button id="vim-close" title="Close [Esc]">:q!</button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
